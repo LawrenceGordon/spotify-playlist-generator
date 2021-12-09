@@ -100,11 +100,16 @@ def get_token(user_id, client_id, client_secret):
 
 args = parse_args()
 token = get_token(user_id, client_id, client_secret)
-uris = get_playlist(token, args.limit, args.market, args.genre, args.artist.split(":")[2], args.track.split(":")[2], args.dance, args.inst, args.energy)
-if args.track is not None:
-    uris[0] = (f'spotify:track:{args.track}')
+
+artist = args.artist.split(":")[2] if args.artist is not None else args.artist
+track = args.track.split(":")[2] if args.track is not None else None
+print(artist, track)
+
+uris = get_playlist(token, args.limit, args.market, args.genre, artist, track, args.dance, args.inst, args.energy)
+if track is not None:
+    uris[0] = (args.track)
 if args.name is None:
-    name = get_name(args.artist, args.track)
+    name = get_name(artist, track)
 else:
     name = args.name
 make_playlist(user_id, token, uris, name, args.description, args.p)
