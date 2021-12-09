@@ -1,6 +1,9 @@
-import requests, argparse, copy, json
-from secret import token
+import requests, argparse, copy, json, spotipy
+import spotipy.util as util
+#from secret import token
 from secret import user_id
+from secret import client_id
+from secret import client_secret
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -90,8 +93,14 @@ def make_playlist(user_id, token, uris, name, desc, public):
     print(response.status_code)
     print(f'Your playlist is ready at {url}')
 
+def get_token(user_id, client_id, client_secret):
+    token = util.prompt_for_user_token(user_id, "playlist-modify-private", client_id, client_secret, redirect_uri="http://localhost/")
+    return token
+
+
 args = parse_args()
-uris = get_playlist(token, args.limit, args.market, args.genre, args.artist, args.track, args.dance, args.inst, args.energy)
+token = get_token(user_id, client_id, client_secret)
+uris = get_playlist(token, args.limit, args.market, args.genre, args.artist.split(":")[2], args.track.split(":")[2], args.dance, args.inst, args.energy)
 if args.track is not None:
     uris[0] = (f'spotify:track:{args.track}')
 if args.name is None:
