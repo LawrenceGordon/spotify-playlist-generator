@@ -94,7 +94,7 @@ def make_playlist(user_id, token, uris, name, desc, public):
     print(f'Your playlist is ready at {url}')
 
 def get_token(user_id, client_id, client_secret):
-    token = util.prompt_for_user_token(user_id, "playlist-modify-private", client_id, client_secret, redirect_uri="http://localhost/")
+    token = util.prompt_for_user_token(user_id, "playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative", client_id, client_secret, redirect_uri="http://localhost/")
     return token
 
 
